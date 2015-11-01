@@ -1,0 +1,322 @@
+\documentclass[10pt,fleqn]{article} % Default font size and left-justified equations
+\usepackage[%
+    pdftitle={SLCI : },
+    pdfauthor={Xavier Pessoles}]{hyperref}
+    
+\input{style/new_style}
+\input{style/macros_SII}
+
+\usepackage{multicol}
+\fichetrue
+%\fichefalse
+
+\proftrue
+\proffalse
+
+\tdtrue
+%\tdfalse
+
+\courstrue
+\coursfalse
+
+\def\discipline{Sciences \\Industrielles de \\ l'Ingénieur}
+\def\xxtete{Sciences Industrielles de l'Ingénieur}
+
+\def\classe{PTSI}
+\def\xxnumpartie{Cycle 2}
+\def\xxpartie{Analyse et Modélisation des SLCI}
+
+\def\xxnumchapitre{Chapitre 3}
+\def\xxchapitre{Réponse temporelle des SLCI}
+
+\def\xxtitreexo{Motoréducteurs équipant les roues d’un robot Martien}
+\def\xxsourceexo{\hspace{.2cm} D'après concours X-ENS -- PSI -- 2005.
+
+\hspace{.2cm} Adapté par Jean-Pierre Pupier.}
+
+
+\def\xxposongletx{2}
+\def\xxposonglettext{1.45}
+\def\xxposonglety{20}
+\def\xxonglet{Cycle 2 -- Ch. 3}
+
+\def\xxactivite{Colle 4}
+\def\xxauteur{\textsl{Xavier Pessoles}}
+
+\def\xxcompetences{%
+\textsl{%
+\textbf{Savoirs et compétences :}\\
+\noindent \textbf{Modéliser :} 
+\begin{itemize}[label=\ding{112},font=\color{ocre}] 
+\item modéliser un système en utilisant une fonction de transfert du deuxième ordre. 
+\end{itemize}
+}}
+
+\def\xxfigures{
+%\includegraphics[width=.8\linewidth]{images/fig_01}
+}%figues de la page de garde
+
+\def\xxpied{%
+Cycle 2 -- Analyse et Modélisation des SLCI \\
+Ch. 3 : Réponses temporelles -- \xxactivite%
+}
+
+
+\setcounter{secnumdepth}{5}
+%---------------------------------------------------------------------------
+
+
+\begin{document}
+%\chapterimage{images/Fond_Cin}
+\input{style/new_pagegarde}
+\vspace{8cm}
+\pagestyle{fancy}
+\thispagestyle{plain}
+
+
+\def\columnseprulecolor{\color{ocre}}
+\setlength{\columnseprule}{0.4pt} 
+
+
+\begin{multicols}{2}
+
+\section*{Introduction}
+\subsection*{Présentation de l'étude}
+
+Une tôle est une plaque rectangulaire. Sa longueur est de l'ordre d'une centaine de mètres, sa largeur du mètre et son épaisseur du millimètre. Elle est conditionnée enroulée sur elle-même autour d'un fourreau (cf. figure 1). L'écrasement entre deux cylindres animés de mouvements de rotation antagonistes (cf. figure 2) permet de réduire l'épaisseur de la tôle. Cette opération s'appelle le laminage et la machine qui la réalise un laminoir. C'est un des plus importants procédés de mise en forme des métaux. Les produits issus du laminage sont utilisés en automobile, en électroménager, en emballage alimentaire...
+
+\vspace{.25cm}
+
+\noindent\begin{minipage}[c]{.48\linewidth}
+\begin{center}
+\includegraphics[width=.95\linewidth]{images/figure_01}
+
+\textit{Figure 1 : Fourreaux et tôles conditionnées}
+\end{center}
+\end{minipage}\hfill
+\begin{minipage}[c]{.48\linewidth}
+\begin{center}
+\includegraphics[width=.95\linewidth]{images/figure_02}
+
+\textit{Figure 2 : Principe de base du laminage}
+\end{center}
+\end{minipage}\hfill
+
+
+\subsection*{Fonctionnement du laminoir Sendzimir}
+
+\begin{center}
+\includegraphics[width=.95\linewidth]{images/figure_03}
+
+\textit{Figure 3 : Schéma d'un laminoir Sendzimir}
+\end{center}
+
+Le laminoir de type Sendzimir (cf. figure 3) permet de laminer les tôles métalliques. Plusieurs passes successives sont réalisées pour écraser progressivement la tôle. Pour la première passe, ce laminoir met en œuvre quatre modules :
+\begin{itemize}
+\item le module de déroulement: il a pour fonction de dérouler la tôle d'épaisseur initiale. Il est constitué principalement d'un moto-réducteur qui entraîne en rotation le fourreau, asservi de manière à assurer un effort de tension constant dans la tôle en entrée du laminoir. Ce module comporte également une planeuse qui redresse la tôle pour la rendre plane et un ascenseur de levage qui permet de charger la tôle.
+\item le module d'entraînement de la tôle, appelé cage d'entraînement: il a pour fonction de faire avancer la tôle dans le laminoir. Il est constitué d'un mécanisme à plusieurs cylindres, entraînés en rotation par un moteur à courant continu, asservi en vitesse. Les cylindres de travail entraînent la tôle par adhérence.
+\item le module de serrage: il a pour fonction de contrôler l'écrasement de la tôle. Il est constitué de plusieurs vérins hydrauliques asservis en position, appuyant sur les cylindres arrières.
+\item le module de bobinage: il a pour fonction d'enrouler la tôle finale d'épaisseur réduite. Il est constitué d'un moto-réducteur, asservi de manière à assurer un effort de tension constant dans la tôle en sortie du laminoir.
+\end{itemize}
+
+\section*{Étude de la fonction <<assurer l'entraînement de la tôle>>}
+
+Pour assurer cette fonction il est nécessaire de réaliser le contrôle continu de la vitesse d'entraînement de la tôle dans le module d'entraînement du laminoir.
+
+\subsection*{Performance attendues}
+
+Les performances attendues sont données par le tableau suivant.
+
+\begin{center}
+%\includegraphics[width=\linewidth]{images/figure_04}
+\begin{tabular}{|p{.25\linewidth}|p{.65\linewidth}|}
+\hline
+Critères & Niveaux \\
+\hline
+\hline
+Précision & erreur statique inférieure à 1\% pour une entrée échelon. \\
+\hline
+Rapidité & Temps de réponse à 5\% de l'ordre de 0,6 s. \\
+& Temps du premier maximum de l'ordre de 0,3 s. \\
+\hline
+Amortissement & Dépassement maximal $D=10\%$. \\
+\hline
+Régulation & Insensible aux perturbations en régime permanent. \\
+\hline
+\end{tabular}
+\end{center}
+
+\subparagraph{}
+\textit{Donner la définition d'un système stable. A quelle condition cela est-il vérifié ?}
+
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else
+\fi
+\subparagraph{}
+\textit{Donner la grandeur physique permettant de définir la rapidité d'un système. A l'aide d'une représentation graphique expliquer que la faculté d’un système à atteindre vite la grandeur physique souhaitée n’est pas forcément un gage de rapidité.}
+
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else \fi
+
+\subparagraph{}
+\textit{Donner la valeur de dépassement maximum qui ne pénalise pas le temps de réponse.}
+
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else \fi
+
+\subparagraph{}
+\textit{Expliquer la phrase <<insensibilité aux perturbations en régime permanent>>.}
+
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else \fi
+
+\subsection*{Chaîne fonctionnelle sans correcteur}
+
+La chaîne fonctionnelle de l'asservissement en vitesse de l'entraînement de la tôle est schématisée par les schémas fonctionnels suivants. Le couple perturbateur $C_L$ modélise l'action d'entraînement de la tôle.
+
+\begin{center}
+\includegraphics[width=\linewidth]{images/figure_05}
+
+\includegraphics[width=\linewidth]{images/figure_06}
+
+%\includegraphics[width=\linewidth]{images/figure_07}
+\end{center}
+
+\begin{itemize}
+\item $\Omega$ : vitesse angulaire du moteur;
+\item $\Omega_m$ : vitesse angulaire mesurée du moteur;
+\item $V_c$ : vitesse de consigne d'entraînement;
+\item $V_s$ : vitesse réelle d'entraînement;
+\item $C_L$ : couple de laminage;
+\item $R_m = 7,5 \cdot 10^{-2} \; \Omega$ : résistance de l'induit du moteur;
+\item $L = 3\cdot 10^{-3}\; \text{H}$ : inductance de l'induit du moteur;
+\item $K_0=15\;\text{NmA}^{-1}$ : constante du flux du moteur;
+\item $K_e = 15 \; \text{V s rad}^{-1}$ : constante de force contre électromotrice du moteur;
+\item $A = 200$ : gain de l'amplificateur de puissance;
+\item $J_m = 110\; \text{kg m}^2$ : inertie du moteur;
+\item $J_{ch} = 70\; \text{kg m}^2$ : inertie de de la charge;
+\item $J=J_m+J_{ch} = 180\; \text{kg m}^2$ : inertie totale du système;
+\item $R_0 = 20\cdot 10^{-3}\; \text{m}$ : rayon du cylindre de travail équivalent;
+\item $g_0 = 0,1\text{V s rad}^{-1} $ : gain de la génératrice tachymétrique;
+\item $N=0,65$ : rapport de réduction.
+\end{itemize}
+Pour le moment le système est sans correcteur c'est à dire que $C(p) = 1$.
+
+On considère dans un premier temps que le couple de laminage $C_L$ est nul.
+
+\subparagraph{}
+\textit{Exprimer la fonction de transfert relative au moteur électrique $H_{mot}=\dfrac{\Omega(p)}{U_C(p)}$ et la mettre sous la forme $H_{mot}=\dfrac{K_{mot}}{a_1p^2+a_0 p +1}$ en précisant clairement l'expression littérale de $K_{mot}$, $a_0$ et $a_1$.}
+
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else \fi
+
+\subparagraph{}
+\textit{Calculer les valeurs numériques de $K_{mot}$, $a_0$ et $a_1$. Vous préciserez (évidemment) les unités.}
+
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else \fi
+
+
+La fonction de transfert du moteur étant connue, le schéma fonctionnel du système étudié se met alors sous la forme suivante.
+
+\begin{center}
+\includegraphics[width=\linewidth]{images/figure_08}
+\end{center}
+
+\subparagraph{}
+\textit{Exprimez littéralement, en faisant intervenir $K_{mot}$, $a_0$ et $a_1$ la fonction de transfert en boucle ouverte $\dfrac{\Omega_m(p)}{e(p)}$.}
+
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else \fi
+
+\subparagraph{}
+\textit{Calculer la fonction de transfert en boucle fermée $\dfrac{V_S(p)}{V_C(p)}$.}
+
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else \fi
+
+\subparagraph{}
+\textit{Calculer les caractéristiques numériques de la fonction de transfert en boucle fermée :
+\begin{itemize}
+\item gain statique $K_{stat}$;
+\item pulsation naturelle ou pulsation propre $\omega_0$;
+\item amortissement $\xi$.
+\end{itemize}
+}
+
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else \fi
+
+
+Les abaques donnés ci-dessous correspondent à un système du second ordre décrit par sa fonction de transfert en boucle fermée $F(p)=\dfrac{\omega_0^2}{p^2+2\xi\omega_0 p + \omega_0^2}$ .
+
+\begin{center}
+\includegraphics[width=\linewidth]{images/figure_09}
+
+\includegraphics[width=\linewidth]{images/figure_10}
+\end{center}
+
+\subparagraph{}
+\textit{A partir des abaques déterminer le premier dépassement en \% et le temps de réponse $t_e$  à 5\% à un échelon de consigne}
+
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else \fi
+
+\subparagraph{}
+\textit{Le temps du premier dépassement obtenu par les abaques est-il en cohérence avec la formule du cours : $T_m=\dfrac{\pi}{\omega_0\sqrt{1-\xi^2}}$ ?}
+
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else \fi
+
+\subparagraph{}
+\textit{Conclure quant à la pertinence d'un bouclage sans correction. Deux points sont à analyser : rapidité et amortissement.}
+
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else \fi
+
+\subsection*{Chaîne fonctionnelle avec correcteur proportionnel.}
+
+Le correcteur a maintenant pour fonction de transfert $C(p) = K_C$.
+
+\subparagraph{}
+\textit{Calculer la fonction de transfert en boucle ouverte  $\dfrac{\Omega_m(p)}{e(p)}$ et en déduire la fonction de transfert en boucle fermée $\dfrac{V_S(p)}{V_C(p)}$.}
+
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else \fi
+
+\subparagraph{}
+\textit{Exprimer la valeur du gain $K_C$, notée $K_{C0}$, pour que le système en boucle fermée présente un dépassement de $D=10\%$. Calculer cette valeur. Faire l'application numérique. }
+
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else \fi
+
+\end{multicols}
+\end{document}
